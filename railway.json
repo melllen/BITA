@@ -5,7 +5,7 @@
     "buildCommand": "npm install && npm run build"
   },
   "deploy": {
-    "startCommand": "npm run migrate -w server && node server/src/index.js",
+    "startCommand": "node server/src/index.js",
     "healthcheckPath": "/health",
     "restartPolicyType": "ON_FAILURE"
   }

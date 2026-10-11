@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.js';
 import taskRoutes from './routes/tasks.js';
 import voiceNoteRoutes from './routes/voiceNotes.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { migrate } from './db/migrate.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -45,4 +46,9 @@ if (isProd) {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+migrate()
+  .then(() => app.listen(PORT, () => console.log(`Server running on port ${PORT}`)))
+  .catch(err => {
+    console.error('Migration failed — is DATABASE_URL set correctly?', err.message);
+    process.exit(1);
+  });
